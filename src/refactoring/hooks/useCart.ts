@@ -17,9 +17,7 @@ export const useCart = () => {
     if (remainingStock <= 0) return;
 
     setCart((prevCart) => {
-      const existingItem = prevCart.find(
-        (item) => item.product.id === product.id
-      );
+      const existingItem = prevCart.find((item) => item.product.id === product.id);
       if (existingItem) {
         return prevCart.map((item) =>
           item.product.id === product.id
@@ -35,24 +33,18 @@ export const useCart = () => {
   };
 
   const removeFromCart = (productId: string) => {
-    setCart((prevCart) =>
-      prevCart.filter((item) => item.product.id !== productId)
-    );
+    setCart((prevCart) => prevCart.filter((item) => item.product.id !== productId));
   };
 
   const updateQuantity = (productId: string, newQuantity: number) => {
+    // updateCartItemQuantity(cart, productId, newQuantity);
     setCart((prevCart) =>
       prevCart
         .map((item) => {
           if (item.product.id === productId) {
             const maxQuantity = item.product.stock;
-            const updatedQuantity = Math.max(
-              0,
-              Math.min(newQuantity, maxQuantity)
-            );
-            return updatedQuantity > 0
-              ? { ...item, quantity: updatedQuantity }
-              : null;
+            const updatedQuantity = Math.max(0, Math.min(newQuantity, maxQuantity));
+            return updatedQuantity > 0 ? { ...item, quantity: updatedQuantity } : null;
           }
           return item;
         })
