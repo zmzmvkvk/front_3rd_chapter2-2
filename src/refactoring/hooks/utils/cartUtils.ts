@@ -5,9 +5,7 @@ export const calculateItemTotal = (item: CartItem) => {
   const { quantity } = item;
 
   const discount = item.product.discounts.reduce((maxDiscount, d) => {
-    return quantity >= d.quantity && d.rate > maxDiscount
-      ? d.rate
-      : maxDiscount;
+    return quantity >= d.quantity && d.rate > maxDiscount ? d.rate : maxDiscount;
   }, 0);
 
   return price * quantity * (1 - discount);
@@ -26,10 +24,7 @@ export const getMaxApplicableDiscount = (item: CartItem) => {
   return appliedDiscount;
 };
 
-export const calculateCartTotal = (
-  cart: CartItem[],
-  selectedCoupon: Coupon | null
-) => {
+export const calculateCartTotal = (cart: CartItem[], selectedCoupon: Coupon | null) => {
   let totalBeforeDiscount = 0;
   let totalAfterDiscount = 0;
 
@@ -44,10 +39,7 @@ export const calculateCartTotal = (
 
   if (selectedCoupon) {
     if (selectedCoupon.discountType === "amount") {
-      totalAfterDiscount = Math.max(
-        0,
-        totalAfterDiscount - selectedCoupon.discountValue
-      );
+      totalAfterDiscount = Math.max(0, totalAfterDiscount - selectedCoupon.discountValue);
     } else {
       totalAfterDiscount *= 1 - selectedCoupon.discountValue / 100;
     }
@@ -60,22 +52,15 @@ export const calculateCartTotal = (
   };
 };
 
-export const updateCartItemQuantity = (
-  cart: CartItem[],
-  productId: string,
-  newQuantity: number
-): CartItem[] => {
+export const updateCartItemQuantity = (cart: CartItem[], productId: string, newQuantity: number): CartItem[] => {
   return cart
     .map((item) => {
       if (item.product.id === productId) {
         const maxQuantity = item.product.stock;
         const updatedQuantity = Math.max(0, Math.min(newQuantity, maxQuantity));
-        return updatedQuantity > 0
-          ? { ...item, quantity: updatedQuantity }
-          : null;
+        return updatedQuantity > 0 ? { ...item, quantity: updatedQuantity } : null;
       }
       return item;
     })
     .filter((item): item is CartItem => item !== null);
-  return [];
 };

@@ -41,6 +41,7 @@ export const useCart = () => {
   };
 
   const updateQuantity = (productId: string, newQuantity: number) => {
+    // updateCartItemQuantity(cart, productId, newQuantity);
     setCart((prevCart) =>
       updateCartItemQuantity(prevCart, productId, newQuantity)
     );
